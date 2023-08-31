@@ -1,0 +1,44 @@
+<div id="<%= dom_id pin %>">
+  <p>
+    <strong>Title:</strong>
+    <%= pin.title %>
+  </p>
+
+  <%= pin.body %>
+
+  <br />
+
+  <%#= link_to image_tag(pin.image, style: "width: 150px; height: 150px"), pin.image %>
+
+  <!-- 이런 거는 helper에 넣어야 되는거 아냐? -->
+  <%#= link_to image_tag(pin.image_as_thumbnail), pin.image %>
+
+  <!-- null safe -->
+  <%#= link_to image_tag(pin.image_as_thumbnail), pin.image if pin.image.attached? %>
+
+  <!-- extension -->
+  <% if pin.image.content_type.in?(%w[image/jpeg image/png]) %>
+    <%= link_to image_tag(pin.image_as_thumbnail), pin.image if pin.image.attached? %>
+  <% end %>
+
+  <hr />
+
+  <%# pin.pictures.each do |picture| %>
+    <%#= link_to image_tag(picture, style: "width: 150px; height: 150px"), picture %>
+  <%# end %>
+
+  <!-- 이렇게 하면 실패! -->
+  <%# pin.pictures.each do |picture| %>
+    <%#= link_to image_tag(picture.image_as_thumbnail), picture %>
+  <%# end %>
+
+  <!-- 근데 이렇게 하면 해당 image의 thumbnail을 가리키게 된다 -->
+  <%# pin.pictures_as_thumbnails.each do |picture| %>
+    <%#= link_to image_tag(picture), picture %>
+  <%# end %>
+
+  <!-- 이렇게 하면 원본 image를 가리키게 된다 -->
+  <% pin.pictures.each do |picture| %>
+    <%= link_to image_tag(pin.picture_as_thumbnail(picture)), picture %>
+  <% end %>
+</div>
